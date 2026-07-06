@@ -544,7 +544,7 @@ thesislogic serve   <span class="c"># → workspace at :8600</span></pre>
       <a href="#" id="email-link" rel="nofollow">reveal address</a>. This site sets no cookies and
       uses privacy-respecting, aggregate-only analytics.</p>
     </div>
-    <form id="contact-form" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" accept-charset="UTF-8">
+    <form id="contact-form" method="POST" action="https://formspree.io/f/xvzjybke" accept-charset="UTF-8">
       <div class="honeypot" aria-hidden="true">
         <label>Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
       </div>
@@ -642,7 +642,7 @@ form.addEventListener('submit', async function(e){
   if(form._gotcha && form._gotcha.value) return;           // bot honeypot
   const data = new FormData(form);
   const endpoint = form.action;
-  if(endpoint.includes('YOUR_FORM_ID')){                    // not yet configured → mailto compose
+  if(endpoint.includes('xvzjybke')){                    // not yet configured → mailto compose
     const body = encodeURIComponent(`${data.get('message')}\n\n— ${data.get('name')} <${data.get('email')}>`);
     const subject = encodeURIComponent('[thesislogic.com] ' + data.get('topic'));
     location.href = `mailto:${addr()}?subject=${subject}&body=${body}`;
