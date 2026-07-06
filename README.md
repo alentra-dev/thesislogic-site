@@ -15,10 +15,19 @@ at **https://thesislogic.com**. No build step, no dependencies — edit `index.h
 | A     | @    | 185.199.111.153 |
 | CNAME | www  | alentra-dev.github.io |
 
-Then in this repo's **Settings → Pages**, confirm the custom domain shows `thesislogic.com` and
-tick **Enforce HTTPS** once the certificate is issued (can take up to an hour after DNS
-propagates). Optionally park `thesislogic.ai` with a redirect to thesislogic.com at the
-registrar level.
+> **Note:** thesislogic.com currently points at Squarespace ("Coming Soon" page), so the custom
+> domain is parked in this repo as `CNAME.disabled` and the site serves from
+> **https://alentra-dev.github.io/thesislogic-site/** in the meantime. After updating DNS:
+>
+> ```bash
+> git mv CNAME.disabled CNAME && git commit -m "Activate custom domain" && git push
+> ```
+>
+> Then in **Settings → Pages**, set the custom domain to `thesislogic.com` and tick
+> **Enforce HTTPS** once the certificate is issued (up to an hour after DNS propagates).
+> Optionally redirect `thesislogic.ai` → thesislogic.com at the registrar level.
+> Keeping this repo **private** requires GitHub Pro (~$4/mo); on the free plan GitHub Pages
+> only serves from public repos, which is why this repo is public.
 
 ### 2. Contact form (Formspree — free tier)
 
