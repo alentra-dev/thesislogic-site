@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ThesisLogic — Legal AI that cites or declines</title>
+<meta name="description" content="ThesisLogic is an open-source, proof-gated legal AI workbench. Every citation is verified against your jurisdiction's authority corpus — unverified citations are structurally blocked. Local or cloud AI, any jurisdiction, full audit trail.">
+<link rel="canonical" href="https://thesislogic.com/">
+<meta name="author" content="Udonna Eke-Okoro">
+<meta name="theme-color" content="#14110C">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thesislogic.com/">
+<meta property="og:title" content="ThesisLogic — Legal AI that cites or declines">
+<meta property="og:description" content="Open-source, proof-gated legal AI. No unverified citation ever reaches an attorney. Local or cloud AI, any jurisdiction, full audit trail.">
+<meta property="og:image" content="https://thesislogic.com/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ThesisLogic — Legal AI that cites or declines">
+<meta name="twitter:description" content="Open-source, proof-gated legal AI. No unverified citation ever reaches an attorney.">
+<meta name="twitter:image" content="https://thesislogic.com/og-card.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314110C'/%3E%3Cpath d='M14 20h36M32 20v26M20 46h24' stroke='%23F5EFE2' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M40 34l5 5 9-11' stroke='%233FA97C' stroke-width='4.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://thesislogic.com/#software",
+      "name": "ThesisLogic",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Linux, macOS",
+      "url": "https://thesislogic.com/",
+      "softwareVersion": "0.2",
+      "license": "https://www.apache.org/licenses/LICENSE-2.0",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+      "description": "Open-source, proof-gated legal AI workbench. Every citation is verified against a validated jurisdiction corpus; unverified citations are structurally blocked. Supports fully local AI, cloud AI, or deterministic no-model operation.",
+      "author": {"@id": "https://thesislogic.com/#udonna"},
+      "codeRepository": "https://github.com/alentra-dev/thesislogic"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://thesislogic.com/#udonna",
+      "name": "Udonna Eke-Okoro",
+      "url": "https://thesislogic.com/#creator",
+      "sameAs": ["https://github.com/alentra-dev", "https://contynu.com"],
+      "jobTitle": "AI Practitioner & Consultant",
+      "description": "Creator of ThesisLogic and Contynu. Builds and advocates for verifiably responsible AI systems in regulated industries.",
+      "knowsAbout": ["Responsible AI", "Legal technology", "AI governance", "Retrieval-augmented generation", "AI in regulated industries"]
+    },
+    {
+      "@type": "WebSite",
+      "url": "https://thesislogic.com/",
+      "name": "ThesisLogic",
+      "publisher": {"@id": "https://thesislogic.com/#udonna"}
+    }
+  ]
+}
+</script>
+
+<style>
+/* ─────────────────────────── design tokens ─────────────────────────── */
+:root{
+  --paper:#FAF8F3; --card:#FFFFFF; --ink:#181410; --ink-soft:#5D564A;
+  --line:#E6DFD0; --line-strong:#D4CAB4;
+  --verify:#1B6E4C; --verify-soft:#EAF4EE; --flag:#A93B31; --flag-soft:#F9ECEA;
+  --brass:#8C6D2F; --code-bg:#14110C; --code-ink:#EDE6D6;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --maxw:1080px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#131009; --card:#1B1710; --ink:#EDE7DA; --ink-soft:#A89F8E;
+    --line:#2C261B; --line-strong:#3D3524;
+    --verify:#4CAF87; --verify-soft:#15251D; --flag:#D9705F; --flag-soft:#2C1815;
+    --brass:#C2A15C; --code-bg:#0C0A06; --code-ink:#E4DCC8;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{animation:none!important;transition:none!important} }
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.65}
+a{color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.kicker{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
+h1,h2,h3{line-height:1.15;font-weight:600;letter-spacing:-.01em}
+h2{font-size:clamp(1.6rem,3.4vw,2.2rem);margin:.35em 0 .5em}
+h3{font-size:1.12rem;margin:0 0 .35em}
+p{margin:.55em 0}
+.muted{color:var(--ink-soft)}
+section{padding:84px 0;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:.92rem;font-weight:600;
+  padding:12px 22px;border-radius:10px;text-decoration:none;border:1.5px solid var(--ink);transition:transform .15s ease, box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.quiet{border-color:var(--line-strong)}
+code,pre{font-family:var(--mono)}
+::selection{background:var(--brass);color:#fff}
+
+/* ─────────────────────────── header ─────────────────────────── */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:26px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.12rem;text-decoration:none;letter-spacing:-.01em}
+.logo svg{flex:none}
+.nav-links{display:flex;gap:22px;margin-left:auto;font-family:var(--sans);font-size:.88rem}
+.nav-links a{text-decoration:none;color:var(--ink-soft)}
+.nav-links a:hover{color:var(--ink)}
+.nav .gh{font-family:var(--sans);font-size:.85rem;font-weight:600;border:1.5px solid var(--line-strong);
+  padding:7px 14px;border-radius:8px;text-decoration:none;display:flex;align-items:center;gap:7px}
+@media(max-width:840px){ .nav-links{display:none} }
+
+/* ─────────────────────────── hero ─────────────────────────── */
+.hero{padding:88px 0 70px;border-top:0}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+@media(max-width:920px){ .hero .wrap{grid-template-columns:1fr} }
+.hero h1{font-size:clamp(2.3rem,5.2vw,3.4rem);margin:.3em 0 .25em}
+.hero h1 .verify-word{color:var(--verify);font-style:italic}
+.hero h1 .decline-word{color:var(--flag);font-style:italic}
+.hero .lede{font-size:1.14rem;color:var(--ink-soft);max-width:34em}
+.hero .ctas{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.hero .fineprint{font-family:var(--sans);font-size:.78rem;color:var(--ink-soft);margin-top:20px;display:flex;gap:18px;flex-wrap:wrap}
+.hero .fineprint span{display:flex;align-items:center;gap:6px}
+
+/* ── the proof-gate demo card ── */
+.demo{background:var(--code-bg);color:var(--code-ink);border-radius:16px;box-shadow:0 24px 60px -18px rgba(20,15,5,.45);
+  font-family:var(--mono);font-size:.78rem;line-height:1.65;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+.demo-bar{display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.08);
+  font-family:var(--sans);font-size:.72rem;color:#9C937F;letter-spacing:.04em}
+.demo-bar .dot{width:10px;height:10px;border-radius:50%;background:#3A342A}
+.demo-body{padding:18px 20px 20px;min-height:335px}
+.demo-q{color:#B8AE97;margin-bottom:12px}
+.demo-line{opacity:0;transform:translateY(4px);transition:opacity .4s ease, transform .4s ease;margin:7px 0}
+.demo-line.show{opacity:1;transform:none}
+.cite{padding:1px 7px;border-radius:6px;border:1px solid #4A4232;white-space:nowrap}
+.cite.checking{border-color:#8C6D2F;color:#D8BE83}
+.cite.ok{border-color:#2E7D5B;color:#7FD6AC;background:rgba(46,125,91,.14)}
+.cite.ok::after{content:" ✓ verified"}
+.cite.bad{border-color:#B3483C;color:#F2A196;background:rgba(179,72,60,.16);text-decoration:line-through}
+.cite.bad::after{content:" ✕ not in corpus";text-decoration:none}
+.gate-banner{margin-top:14px;padding:10px 13px;border-radius:9px;font-family:var(--sans);font-size:.74rem;
+  border:1px solid #B3483C;color:#F2A196;background:rgba(179,72,60,.1);opacity:0;transition:opacity .5s ease}
+.gate-banner.show{opacity:1}
+.gate-banner.good{border-color:#2E7D5B;color:#8FDDB6;background:rgba(46,125,91,.1)}
+.demo-replay{background:none;border:1px solid #4A4232;color:#B8AE97;border-radius:7px;padding:4px 12px;
+  font-family:var(--sans);font-size:.7rem;cursor:pointer;margin-left:auto}
+.demo-replay:hover{color:#EDE6D6;border-color:#8C6D2F}
+
+/* ─────────────────────────── problem ─────────────────────────── */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media(max-width:840px){ .split{grid-template-columns:1fr} }
+.pull{border-left:3px solid var(--flag);padding:6px 0 6px 20px;margin:22px 0;font-size:1.06rem;font-style:italic;color:var(--ink-soft)}
+.contrast-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+@media(max-width:640px){ .contrast-cards{grid-template-columns:1fr} }
+.ccard{border-radius:14px;padding:20px 22px;border:1px solid var(--line);background:var(--card)}
+.ccard.bad{border-color:color-mix(in srgb, var(--flag) 40%, var(--line))}
+.ccard.good{border-color:color-mix(in srgb, var(--verify) 40%, var(--line))}
+.ccard .tag{font-family:var(--sans);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.ccard.bad .tag{color:var(--flag)} .ccard.good .tag{color:var(--verify)}
+.ccard p{font-size:.95rem}
+
+/* ─────────────────────────── pipeline ─────────────────────────── */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:36px;counter-reset:step}
+@media(max-width:960px){ .pipeline{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:560px){ .pipeline{grid-template-columns:1fr} }
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 18px;position:relative}
+.step::before{counter-increment:step;content:"0" counter(step);font-family:var(--mono);font-size:.72rem;color:var(--brass);letter-spacing:.1em}
+.step h3{font-size:.99rem;margin:.45em 0 .3em}
+.step p{font-size:.86rem;color:var(--ink-soft);margin:0}
+.step.gate{border-color:var(--verify);box-shadow:0 0 0 1px var(--verify)}
+.step.gate::before{color:var(--verify)}
+
+/* ─────────────────────────── features ─────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+@media(max-width:920px){ .grid{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:600px){ .grid{grid-template-columns:1fr} }
+.feat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.feat .ic{font-size:1.35rem}
+.feat h3{font-size:1rem;margin:.5em 0 .3em}
+.feat p{font-size:.88rem;color:var(--ink-soft);margin:0}
+
+/* ─────────────────────────── open source / quickstart ─────────────────────────── */
+pre.shell{background:var(--code-bg);color:var(--code-ink);border-radius:14px;padding:22px 24px;overflow-x:auto;
+  font-size:.84rem;line-height:1.7;border:1px solid rgba(255,255,255,.06)}
+pre.shell .c{color:#8F8570}
+pre.shell .p{color:#7FD6AC}
+.os-flex{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media(max-width:840px){ .os-flex{grid-template-columns:1fr} }
+.checklist{list-style:none;padding:0;margin:18px 0 0}
+.checklist li{padding-left:30px;position:relative;margin:10px 0;font-size:.97rem}
+.checklist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--verify);font-weight:700}
+
+/* ─────────────────────────── responsible AI ─────────────────────────── */
+.duty-table{width:100%;border-collapse:collapse;margin-top:26px;font-size:.92rem;background:var(--card);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.duty-table th,.duty-table td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.duty-table th{font-family:var(--sans);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.duty-table tr:last-child td{border-bottom:0}
+.duty-table td:first-child{font-weight:600;width:38%}
+.duty-table td:last-child{color:var(--ink-soft)}
+@media(max-width:640px){ .duty-table td:first-child{width:auto} }
+.table-scroll{overflow-x:auto}
+
+/* ─────────────────────────── creator ─────────────────────────── */
+.creator{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;padding:38px}
+@media(max-width:720px){ .creator{grid-template-columns:1fr} }
+.monogram{width:96px;height:96px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;
+  align-items:center;justify-content:center;font-size:2rem;font-weight:700;letter-spacing:.02em}
+.creator .roles{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.chip{font-family:var(--sans);font-size:.72rem;font-weight:600;border:1px solid var(--line-strong);
+  border-radius:99px;padding:4px 12px;color:var(--ink-soft)}
+.also{margin-top:26px;border:1px dashed var(--line-strong);border-radius:14px;padding:20px 22px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.also .mark{font-family:var(--mono);font-size:.8rem;background:var(--code-bg);color:#7FD6AC;border-radius:8px;padding:8px 12px;white-space:nowrap}
+
+/* ─────────────────────────── contact ─────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media(max-width:840px){ .contact-grid{grid-template-columns:1fr} }
+form{display:flex;flex-direction:column;gap:12px}
+label{font-family:var(--sans);font-size:.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:.04em}
+input,textarea,select{font-family:var(--sans);font-size:.95rem;padding:12px 14px;border:1.5px solid var(--line-strong);
+  border-radius:10px;background:var(--card);color:var(--ink);width:100%}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--brass);outline-offset:1px;border-color:var(--brass)}
+.form-status{font-family:var(--sans);font-size:.85rem;min-height:1.4em}
+.form-status.ok{color:var(--verify)} .form-status.err{color:var(--flag)}
+.honeypot{position:absolute;left:-6000px;opacity:0;height:0;overflow:hidden}
+
+/* ─────────────────────────── footer ─────────────────────────── */
+footer{border-top:1px solid var(--line);padding:44px 0 60px;font-family:var(--sans);font-size:.82rem;color:var(--ink-soft)}
+footer .cols{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer a{color:var(--ink-soft)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="ThesisLogic home">
+      <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="var(--ink)"/><path d="M14 20h36M32 20v26M20 46h24" stroke="var(--paper)" stroke-width="4" stroke-linecap="round"/><path d="M40 34l5 5 9-11" stroke="var(--verify)" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      ThesisLogic
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#why">Why</a>
+      <a href="#how">How it works</a>
+      <a href="#open-source">Open source</a>
+      <a href="#responsible-ai">Responsible AI</a>
+      <a href="#creator">Creator</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="gh" href="https://github.com/alentra-dev/thesislogic" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      Star on GitHub
+    </a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Open-source legal AI · Apache-2.0</div>
+      <h1>Legal AI that <span class="verify-word">cites</span> — or&nbsp;<span class="decline-word">declines</span>.</h1>
+      <p class="lede">ThesisLogic is an open-source legal AI workbench built around one uncompromising
+      rule: <strong>no unverified citation ever reaches an attorney.</strong> Every authority in every
+      answer is checked against your jurisdiction's validated corpus. What can't be proven is
+      withheld — visibly, auditably, every time.</p>
+      <div class="ctas">
+        <a class="btn solid" href="https://github.com/alentra-dev/thesislogic" rel="noopener">View on GitHub</a>
+        <a class="btn quiet" href="#how">See how the proof gate works</a>
+      </div>
+      <div class="fineprint">
+        <span>⚖ Any US jurisdiction</span>
+        <span>🖥 Fully local AI or cloud API</span>
+        <span>📜 Complete audit trail</span>
+      </div>
+    </div>
+
+    <div class="demo" id="demo" aria-label="Animated demonstration of the proof gate blocking a fabricated citation">
+      <div class="demo-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        &nbsp;thesislogic · research — live model, proof-gated
+        <button class="demo-replay" id="replay" aria-label="Replay demonstration">↻ replay</button>
+      </div>
+      <div class="demo-body">
+        <div class="demo-q">❯ when may support be paid directly to a child enrolled in college?</div>
+        <div class="demo-line" data-t="400"><strong>Brief Answer.</strong> The court may order payments directly</div>
+        <div class="demo-line" data-t="900">to the child, conditioned on enrollment and attendance.</div>
+        <div class="demo-line" data-t="1500"><span class="cite" data-verify="ok" data-t2="2600">RSMo § 452.340</span> &nbsp;<span class="cite" data-verify="ok" data-t2="3200">Mason v. Mason, 873 S.W.2d 631</span></div>
+        <div class="demo-line" data-t="3900">A strict Form 14 application may be rebutted where the child</div>
+        <div class="demo-line" data-t="4400">works and holds substantial savings. <span class="cite" data-verify="ok" data-t2="5300">Rich v. Rich, 871 S.W.2d 618</span></div>
+        <div class="demo-line" data-t="6100">Deviation also finds support in <span class="cite" data-verify="bad" data-t2="7300">Larson v. Meridian, 999 S.W.4th 12</span></div>
+        <div class="gate-banner" id="gate-bad" data-t="8300">✕ PROOF GATE — 1 citation not found in the authority corpus.
+          Fabricated authority blocked. Corrective regeneration requested…</div>
+        <div class="gate-banner good" id="gate-good" data-t="10000">✓ PROOF GATE PASSED — 3 of 3 citations verified against 47,141 Missouri authorities.
+          Answer released with full provenance.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ WHY ══════════════════════════ -->
+<section id="why">
+  <div class="wrap">
+    <div class="kicker">§ 01 · The problem</div>
+    <h2>Fluent is not the same as true.</h2>
+    <div class="split">
+      <div class="reveal">
+        <p>Courts across the United States have sanctioned attorneys for filings that cited cases
+        which <em>do not exist</em> — invented by AI tools that were rewarded for sounding
+        confident, not for being right. Bar associations now treat generative-AI competence as a
+        professional responsibility issue.</p>
+        <div class="pull">In a regulated profession, an AI that is occasionally
+        confidently wrong is worse than no AI at all.</div>
+        <p>The standard industry answer is a disclaimer. ThesisLogic's answer is
+        <strong>architecture</strong>: verification isn't a review step someone might skip — it's
+        a gate the output physically cannot bypass.</p>
+      </div>
+      <div class="contrast-cards reveal">
+        <div class="ccard bad">
+          <div class="tag">Typical AI tool</div>
+          <p>Generates from model memory. Citations <em>sound</em> plausible. A footnote asks you
+          to "verify important information." The failure is discovered in court.</p>
+        </div>
+        <div class="ccard good">
+          <div class="tag">ThesisLogic</div>
+          <p>Generates only from a validated evidence package. Every citation is parsed and checked
+          against the corpus. Unverified → the answer is downgraded, visibly, and logged.</p>
+        </div>
+        <div class="ccard bad">
+          <div class="tag">Typical AI tool</div>
+          <p>Answers every question, including ones its sources can't support — the harder the
+          question, the smoother the hallucination.</p>
+        </div>
+        <div class="ccard good">
+          <div class="tag">ThesisLogic</div>
+          <p>Measures whether retrieved evidence is actually responsive. Weak evidence → it
+          declines, in plain language, and tells you why.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ HOW ══════════════════════════ -->
+<section id="how">
+  <div class="wrap">
+    <div class="kicker">§ 02 · The architecture</div>
+    <h2>Five stages. One guarantee.</h2>
+    <p class="muted" style="max-width:44em">Research and drafting run a pipeline where the model is
+    the <em>least</em> trusted component. Document workflows — summaries, chronologies, comparisons,
+    privilege review — are fully deterministic and never call a model at all.</p>
+    <div class="pipeline reveal">
+      <div class="step">
+        <h3>Typed retrieval</h3>
+        <p>Exact-citation, case-name, weighted full-text, and semantic search over your
+        jurisdiction pack return <em>authority records and holding-level spans</em> — never
+        anonymous text chunks.</p>
+      </div>
+      <div class="step">
+        <h3>Evidence package</h3>
+        <p>Ranked authorities, their support-eligible language, and the exact set of citations any
+        generation is allowed to use. Case captions can never count as support.</p>
+      </div>
+      <div class="step">
+        <h3>Deterministic answer</h3>
+        <p>A complete memorandum is built from the evidence alone — before any model runs. If the
+        model fails, this is what you get. It's always safe.</p>
+      </div>
+      <div class="step">
+        <h3>Constrained generation</h3>
+        <p>Your model — local or cloud — writes under a citation contract: allowed authorities
+        only, exact strings only, approved decline language for unsupported points.</p>
+      </div>
+      <div class="step gate">
+        <h3>The proof gate</h3>
+        <p>Every citation-shaped string in the draft is verified against the corpus. One
+        unverified citation → the draft is rejected, corrected once, or downgraded. Everything is
+        audited.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ FEATURES ══════════════════════════ -->
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">§ 03 · Built for regulated practice</div>
+    <h2>Trust features, not trust promises.</h2>
+    <div class="grid reveal">
+      <div class="feat"><div class="ic">🔒</div><h3>Local AI or cloud AI — your call</h3>
+        <p>Run llama.cpp, Ollama, or vLLM entirely on your own hardware so client material never
+        leaves the building; or use the Anthropic API under your firm's data terms; or run with no
+        model at all — every workflow still works.</p></div>
+      <div class="feat"><div class="ic">🗺</div><h3>Any jurisdiction, by design</h3>
+        <p>All jurisdiction knowledge lives in a data pack: authorities, citation formats,
+        practice-area taxonomy, disclaimers. Scaffold a pack for any state in minutes; a
+        step-by-step adoption guide walks your firm through migration.</p></div>
+      <div class="feat"><div class="ic">📜</div><h3>Forensic audit trail</h3>
+        <p>Every answer records the model, the retrieval mix, the evidence package, the proof-gate
+        verdict, and any downgrade — reconstructable per matter, displayed beside every answer.</p></div>
+      <div class="feat"><div class="ic">🧱</div><h3>Matter isolation</h3>
+        <p>Documents and results are scoped to user + matter, enforced server-side from the
+        session. Case knowledge never bleeds across matters that merely share a practice area.</p></div>
+      <div class="feat"><div class="ic">⚙️</div><h3>Deterministic-first workflows</h3>
+        <p>Chronologies, comparisons, privilege flags, and summaries are computed, not generated —
+        reproducible outputs with no model in the loop.</p></div>
+      <div class="feat"><div class="ic">🧭</div><h3>Shadow mode for rollout</h3>
+        <p>Evaluate any model safely: attorneys see only deterministic answers while live output
+        accumulates in the audit trail for review before you ever promote it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ OPEN SOURCE ══════════════════════════ -->
+<section id="open-source">
+  <div class="wrap os-flex">
+    <div>
+      <div class="kicker">§ 04 · Open source</div>
+      <h2>Audit the tool that audits your AI.</h2>
+      <p class="muted">Trust infrastructure for the legal profession shouldn't be a black box.
+      ThesisLogic is Apache-2.0 licensed — every rule the proof gate enforces is readable,
+      testable code.</p>
+      <ul class="checklist">
+        <li>Single Python service + SQLite — a firm's IT generalist can run and back it up</li>
+        <li>No telemetry; network calls go only to the model endpoints you configure</li>
+        <li>Validation prompt suite included — 22 automated checks across every workflow</li>
+        <li>There is deliberately <strong>no flag</strong> that lets unverified citations through</li>
+      </ul>
+      <div class="ctas" style="margin-top:24px">
+        <a class="btn solid" href="https://github.com/alentra-dev/thesislogic" rel="noopener">Read the source</a>
+        <a class="btn quiet" href="https://github.com/alentra-dev/thesislogic/blob/master/docs/adoption-guide.md" rel="noopener">Adoption guide</a>
+      </div>
+    </div>
+    <pre class="shell" aria-label="Quickstart commands"><span class="c"># Quickstart — any US jurisdiction</span>
+git clone https://github.com/alentra-dev/thesislogic
+pip install -e thesislogic
+
+<span class="c"># 1 · scaffold your jurisdiction pack</span>
+thesislogic pack scaffold my-state \
+  --jurisdiction <span class="p">"My State"</span>
+thesislogic pack build my-state
+
+<span class="c"># 2 · pick your AI posture (or none at all)</span>
+export THESISLOGIC_GENERATION_PROVIDER=<span class="p">openai_compatible</span>
+export THESISLOGIC_GENERATION_BASE_URL=<span class="p">http://127.0.0.1:8080</span>
+
+<span class="c"># 3 · verify, then serve</span>
+thesislogic doctor
+thesislogic serve   <span class="c"># → workspace at :8600</span></pre>
+  </div>
+</section>
+
+<!-- ══════════════════════════ RESPONSIBLE AI ══════════════════════════ -->
+<section id="responsible-ai">
+  <div class="wrap">
+    <div class="kicker">§ 05 · Responsible AI, operationalized</div>
+    <h2>Professional duties, mapped to running code.</h2>
+    <p class="muted" style="max-width:46em">Responsible AI in a regulated industry isn't a policy
+    document — it's a set of engineering constraints. ThesisLogic is a working demonstration of
+    that thesis, and a template for applying it anywhere the cost of a confident error is
+    unacceptable: law, healthcare, finance, compliance.</p>
+    <div class="table-scroll reveal">
+      <table class="duty-table">
+        <tr><th>Professional duty</th><th>Enforcing mechanism</th></tr>
+        <tr><td>Candor — no false authority</td>
+            <td>Proof gate: unverified citations are structurally blocked; downgrades are visible and logged</td></tr>
+        <tr><td>Competence with technology</td>
+            <td>Provenance rail: every answer shows its mode, model, evidence, and verification result</td></tr>
+        <tr><td>Confidentiality</td>
+            <td>Fully local operation supported; zero telemetry; cloud AI is an explicit, revocable choice</td></tr>
+        <tr><td>Supervision of AI assistance</td>
+            <td>Shadow mode, professional-review notices, review-only privilege flags</td></tr>
+        <tr><td>Recordkeeping &amp; accountability</td>
+            <td>Append-only audit trail keyed by request — every output is reconstructable</td></tr>
+        <tr><td>Honesty about limits</td>
+            <td>Retrieval-confidence floor: weak evidence triggers a plain-language decline, not a fluent guess</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CREATOR ══════════════════════════ -->
+<section id="creator">
+  <div class="wrap">
+    <div class="kicker">§ 06 · The person behind it</div>
+    <h2>Built by a practitioner, not a press release.</h2>
+    <div class="creator reveal">
+      <div class="monogram" aria-hidden="true">UE</div>
+      <div>
+        <h3 style="font-size:1.3rem">Udonna Eke-Okoro</h3>
+        <div class="roles">
+          <span class="chip">AI practitioner</span>
+          <span class="chip">Responsible-AI advocate</span>
+          <span class="chip">Open-source builder</span>
+        </div>
+        <p>I design and ship AI systems for environments where being wrong has consequences —
+        legal, and other highly regulated domains. My working thesis: <em>the path to trustworthy
+        AI is verifiable architecture, not vibes.</em> ThesisLogic is that thesis in production
+        form: retrieval you can inspect, generation you can constrain, and verification you can't
+        turn off.</p>
+        <p class="muted">I take on a small number of consulting engagements — AI strategy and
+        architecture for regulated industries, responsible-AI reviews of existing systems, and
+        bespoke builds on the patterns you see here. If your organization needs AI it can defend
+        in front of a regulator, a court, or a board:</p>
+        <div class="ctas" style="margin-top:14px">
+          <a class="btn solid" href="#contact">Start a conversation</a>
+          <a class="btn quiet" href="https://github.com/alentra-dev" rel="noopener">GitHub profile</a>
+        </div>
+        <div class="also">
+          <span class="mark">$ contynu claude</span>
+          <div style="flex:1;min-width:260px">
+            <strong>Also by the same author — Contynu.</strong>
+            <span class="muted">Memory that persists: a model-agnostic continuity runtime that gives
+            Claude, Codex, and Gemini shared, persistent memory across sessions and models. The same
+            engineering philosophy — durable, inspectable AI infrastructure.</span><br>
+            <a href="https://contynu.com" rel="noopener">contynu.com</a> ·
+            <a href="https://github.com/alentra-dev/contynu" rel="noopener">github.com/alentra-dev/contynu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CONTACT ══════════════════════════ -->
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="kicker">§ 07 · Contact</div>
+      <h2>Let's talk about AI your organization can defend.</h2>
+      <p class="muted">Consulting engagements, speaking on responsible AI in regulated industries,
+      ThesisLogic deployment help, or press — I read everything sent through this form.</p>
+      <p class="muted" style="font-family:var(--sans);font-size:.82rem">Prefer email? Reach me at
+      <a href="#" id="email-link" rel="nofollow">reveal address</a>. This site sets no cookies and
+      uses privacy-respecting, aggregate-only analytics.</p>
+    </div>
+    <form id="contact-form" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" accept-charset="UTF-8">
+      <div class="honeypot" aria-hidden="true">
+        <label>Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <label for="cf-name">Name</label>
+      <input id="cf-name" name="name" required autocomplete="name">
+      <label for="cf-email">Email</label>
+      <input id="cf-email" name="email" type="email" required autocomplete="email">
+      <label for="cf-topic">Topic</label>
+      <select id="cf-topic" name="topic">
+        <option>Consulting engagement</option>
+        <option>ThesisLogic deployment</option>
+        <option>Speaking / press</option>
+        <option>Something else</option>
+      </select>
+      <label for="cf-msg">Message</label>
+      <textarea id="cf-msg" name="message" rows="5" required></textarea>
+      <button class="btn solid" type="submit" style="align-self:flex-start;cursor:pointer">Send message</button>
+      <div class="form-status" id="form-status" role="status"></div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <strong style="color:var(--ink)">ThesisLogic</strong> — legal AI that cites or declines.<br>
+      Apache-2.0 · © <span id="yr"></span> Udonna Eke-Okoro ·
+      <a href="https://github.com/alentra-dev/thesislogic/blob/master/DISCLAIMER.md" rel="noopener">Disclaimer</a>
+    </div>
+    <div style="text-align:right">
+      <a href="https://github.com/alentra-dev/thesislogic" rel="noopener">GitHub</a> ·
+      <a href="https://contynu.com" rel="noopener">Contynu</a> ·
+      <a href="#top">Back to top</a><br>
+      <span style="font-size:.75rem">Not legal advice. No attorney–client relationship. Verify every authority.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ── scroll reveal ── */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── proof-gate demo timeline ── */
+const demo = document.getElementById('demo');
+let demoTimers = [];
+function runDemo(){
+  demoTimers.forEach(clearTimeout); demoTimers = [];
+  demo.querySelectorAll('.demo-line').forEach(l => l.classList.remove('show'));
+  demo.querySelectorAll('.cite').forEach(c => c.classList.remove('checking','ok','bad'));
+  demo.querySelectorAll('.gate-banner').forEach(b => b.classList.remove('show'));
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const at = (t, fn) => reduced ? fn() : demoTimers.push(setTimeout(fn, t));
+  demo.querySelectorAll('.demo-line').forEach(line => at(+line.dataset.t, () => line.classList.add('show')));
+  demo.querySelectorAll('.cite').forEach(c => {
+    at(+c.dataset.t2 - 550, () => c.classList.add('checking'));
+    at(+c.dataset.t2, () => { c.classList.remove('checking'); c.classList.add(c.dataset.verify); });
+  });
+  at(+document.getElementById('gate-bad').dataset.t, () => document.getElementById('gate-bad').classList.add('show'));
+  at(+document.getElementById('gate-good').dataset.t, () => {
+    document.getElementById('gate-bad').classList.remove('show');
+    const badLine = demo.querySelector('.cite.bad')?.closest('.demo-line');
+    if(badLine) badLine.style.opacity = '0.28';
+    document.getElementById('gate-good').classList.add('show');
+  });
+}
+const demoIO = new IntersectionObserver(es => es.forEach(e => {
+  if(e.isIntersecting){ runDemo(); demoIO.unobserve(demo); }
+}), {threshold:.35});
+demoIO.observe(demo);
+document.getElementById('replay').addEventListener('click', runDemo);
+
+/* ── contact: email revealed on interaction only (kept out of static HTML for scrapers) ── */
+const emailParts = ['info', 'thesislogic', 'com'];
+const addr = () => emailParts[0] + '@' + emailParts[1] + '.' + emailParts[2];
+const emailLink = document.getElementById('email-link');
+emailLink.addEventListener('click', function(e){
+  e.preventDefault();
+  this.textContent = addr();
+  this.href = 'mailto:' + addr();
+  this.onclick = null;
+});
+
+/* ── contact form: Formspree when configured, graceful mailto fallback otherwise ── */
+const form = document.getElementById('contact-form');
+const status = document.getElementById('form-status');
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  if(form._gotcha && form._gotcha.value) return;           // bot honeypot
+  const data = new FormData(form);
+  const endpoint = form.action;
+  if(endpoint.includes('YOUR_FORM_ID')){                    // not yet configured → mailto compose
+    const body = encodeURIComponent(`${data.get('message')}\n\n— ${data.get('name')} <${data.get('email')}>`);
+    const subject = encodeURIComponent('[thesislogic.com] ' + data.get('topic'));
+    location.href = `mailto:${addr()}?subject=${subject}&body=${body}`;
+    status.textContent = 'Opening your email client…'; status.className = 'form-status ok';
+    return;
+  }
+  status.textContent = 'Sending…'; status.className = 'form-status';
+  try{
+    const r = await fetch(endpoint, {method:'POST', body:data, headers:{'Accept':'application/json'}});
+    if(r.ok){ form.reset(); status.textContent = 'Message sent — I’ll reply soon. Thank you.'; status.className='form-status ok'; }
+    else{ throw new Error(); }
+  }catch{
+    status.textContent = 'Could not send right now — please email ' + addr() + ' instead.';
+    status.className = 'form-status err';
+  }
+});
+</script>
+
+<!-- GoatCounter: privacy-respecting, cookieless, aggregate-only analytics.
+     Create the free account at goatcounter.com with code "thesislogic",
+     and this starts counting; no consent banner required. -->
+<script data-goatcounter="https://thesislogic.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
