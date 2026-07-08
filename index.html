@@ -35,7 +35,7 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Linux, macOS",
       "url": "https://thesislogic.com/",
-      "softwareVersion": "0.2",
+      "softwareVersion": "0.3",
       "license": "https://www.apache.org/licenses/LICENSE-2.0",
       "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
       "description": "Open-source, proof-gated legal AI workbench. Every citation is verified against a validated jurisdiction corpus; unverified citations are structurally blocked. Supports fully local AI, cloud AI, or deterministic no-model operation.",
@@ -453,6 +453,7 @@ thesislogic pack build my-state
 <span class="c"># 2 · pick your AI posture (or none at all)</span>
 export THESISLOGIC_GENERATION_PROVIDER=<span class="p">openai_compatible</span>
 export THESISLOGIC_GENERATION_BASE_URL=<span class="p">http://127.0.0.1:8080</span>
+<span class="c"># cloud: anthropic | openai | gemini + vendor API key</span>
 
 <span class="c"># 3 · verify, then serve</span>
 thesislogic doctor
